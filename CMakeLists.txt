@@ -14,7 +14,7 @@ add_library(ziplib STATIC ${SOURCES})
 target_include_directories(ziplib INTERFACE Source/ZipLib)
 
 if (ZIPLIB_BUILD_THIRD_PARTY)
-    file(GLOB_RECURSE THIRD_PARTY_SOURCES Source/ThirdParty/**.cpp Source/ThirdParty/**.h)
+    file(GLOB_RECURSE THIRD_PARTY_SOURCES Source/ThirdParty/**.c Source/ThirdParty/**.h)
     target_sources(ziplib PRIVATE ${THIRD_PARTY_SOURCES})
     target_include_directories(ziplib PRIVATE Source/ThirdParty INTERFACE Source/ThirdParty)
 endif ()
