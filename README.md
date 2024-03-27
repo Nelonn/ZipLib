@@ -18,122 +18,116 @@ ZipLib is a lightweight C++11 library for working with ZIP archives with ease. T
 ## Example of usage ##
 
 ### Adding, extracting and removing file using ZipFile wrapper ###
-```
-#!c++
-  const char* zipFilename = "archive.zip";
-  ZipFile::AddFile(zipFilename, "file.txt");
+```C++
+const char* zipFilename = "archive.zip";
+ZipFile::AddFile(zipFilename, "file.txt");
 
-  // there is no need to create folders in the archive separately, because they are part of the filename
-  ZipFile::AddEncryptedFile(zipFilename, "fileOnDisk.txt", "destination/in/archive.txt", "password");
+// there is no need to create folders in the archive separately, because they are part of the filename
+ZipFile::AddEncryptedFile(zipFilename, "fileOnDisk.txt", "destination/in/archive.txt", "password");
 
-  ZipFile::ExtractFile(zipFilename, "file.txt", "newFileOnDisk.txt");
+ZipFile::ExtractFile(zipFilename, "file.txt", "newFileOnDisk.txt");
 
-  ZipFile::ExtractEncryptedFile(zipFilename, "destination/in/archive.txt", "encrypted.txt", "password");
+ZipFile::ExtractEncryptedFile(zipFilename, "destination/in/archive.txt", "encrypted.txt", "password");
 
-  // because folders are part of the filename (until they are not created separately),
-  // the "destination" and "in" folders are deleted too
-  ZipFile::RemoveEntry(zipFilename, "destination/in/archive.txt");
+// because folders are part of the filename (until they are not created separately),
+// the "destination" and "in" folders are deleted too
+ZipFile::RemoveEntry(zipFilename, "destination/in/archive.txt");
 ```
 
 
 ### Very basic sample of a file compression ###
-```
-#!c++
-  ZipArchive::Ptr archive = ZipFile::Open("archive.zip");
+```C++
+ZipArchive::Ptr archive = ZipFile::Open("archive.zip");
 
-  ZipArchiveEntry::Ptr entry = archive->CreateEntry("file.dat");
+ZipArchiveEntry::Ptr entry = archive->CreateEntry("file.dat");
 
-  // if entry is nullptr, it means the file already exists in the archive
-  assert(entry != nullptr); 
+// if entry is nullptr, it means the file already exists in the archive
+assert(entry != nullptr); 
 
-  std::ifstream contentStream("file.dat", std::ios::binary); //should not be destroyed before archive is written
-  entry->SetCompressionStream(contentStream);
+std::ifstream contentStream("file.dat", std::ios::binary); //should not be destroyed before archive is written
+entry->SetCompressionStream(contentStream);
 
-  // you may of course save it somewhere else
-  // note: the contentStream is pumped when the archive is saved
-  // if you want to read the stream before saving of the archive,
-  // it is need to set Immediate mode in SetCompressionStream method (see below)
-  ZipFile::SaveAndClose(archive, "archive.zip");
-  
+// you may of course save it somewhere else
+// note: the contentStream is pumped when the archive is saved
+// if you want to read the stream before saving of the archive,
+// it is need to set Immediate mode in SetCompressionStream method (see below)
+ZipFile::SaveAndClose(archive, "archive.zip");
 
-  // If you want to use std::ostream interface for custom purposes
-  // such as sending data over network, where no seek() operation possible
-  // or you want to remove unnecessary seek operations on HDD
-  // mark entry to use data descriptor for pure streamed operation
-  // see https://en.wikipedia.org/wiki/Zip_(file_format)#File_headers
-  // entry->UseDataDescriptor(true); 
-  // archive->WriteToStream(std::ostream);
 
+// If you want to use std::ostream interface for custom purposes
+// such as sending data over network, where no seek() operation possible
+// or you want to remove unnecessary seek operations on HDD
+// mark entry to use data descriptor for pure streamed operation
+// see https://en.wikipedia.org/wiki/Zip_(file_format)#File_headers
+// entry->UseDataDescriptor(true); 
+// archive->WriteToStream(std::ostream);
 ```
 
 
 ### Very basic sample of a file decompression ###
-```
-#!c++
-  ZipArchive::Ptr archive = ZipFile::Open("archive.zip");
+```C++
+ZipArchive::Ptr archive = ZipFile::Open("archive.zip");
 
-  ZipArchiveEntry::Ptr entry = archive->GetEntry("file.txt");
+ZipArchiveEntry::Ptr entry = archive->GetEntry("file.txt");
 
-  // if the entry is password protected, it is necessary
-  // to set the password before getting a decompression stream
-  if (entry->IsPasswordProtected())
-  {
-    // when decompressing an encrypted entry
-    // there is no need to specify the use of data descriptor
-    // (ZibLib will deduce if the data descriptor was used)
-    entry->SetPassword("pass");
-  }
+// if the entry is password protected, it is necessary
+// to set the password before getting a decompression stream
+if (entry->IsPasswordProtected())
+{
+  // when decompressing an encrypted entry
+  // there is no need to specify the use of data descriptor
+  // (ZibLib will deduce if the data descriptor was used)
+  entry->SetPassword("pass");
+}
 
-  // if the entry is password protected and the provided password is wrong
-  // (or none is provided) the return value will be nullptr
-  std::istream* decompressStream = entry->GetDecompressionStream();
+// if the entry is password protected and the provided password is wrong
+// (or none is provided) the return value will be nullptr
+std::istream* decompressStream = entry->GetDecompressionStream();
 
-  std::string line;
-  std::getline(*decompressStream, line);
+std::string line;
+std::getline(*decompressStream, line);
 
-  printf("First line of a file: '%s'\n", line.c_str());
+printf("First line of a file: '%s'\n", line.c_str());
 ```
 
 
 ### Compressing a file with immediate mode ###
-```
-#!c++
-  auto archive = ZipFile::Open("archive.zip");
+```C++
+auto archive = ZipFile::Open("archive.zip");
 
-  auto entry = archive->CreateEntry("file.dat");
+auto entry = archive->CreateEntry("file.dat");
 
-  // if entry is nullptr, it means the file already exists in the archive
-  assert(entry != nullptr); 
-  
-  {
-    std::ifstream contentStream("file.dat", std::ios::binary); 
-    entry->SetCompressionStream(   // data from contentStream are pumped here (into the memory)
-      contentStream,
-      ZipArchiveEntry::CompressionLevel::Default,
-      ZipArchiveEntry::CompressionMethod::Deflate,
-      ZipArchiveEntry::CompressionMode::Immediate
-    );
+// if entry is nullptr, it means the file already exists in the archive
+assert(entry != nullptr); 
 
-    // the contentStream is destroyed here
-  }
+{
+  std::ifstream contentStream("file.dat", std::ios::binary); 
+  entry->SetCompressionStream(   // data from contentStream are pumped here (into the memory)
+    contentStream,
+    ZipArchiveEntry::CompressionLevel::Default,
+    ZipArchiveEntry::CompressionMethod::Deflate,
+    ZipArchiveEntry::CompressionMode::Immediate
+  );
 
-  ZipFile::SaveAndClose(archive, "archive.zip");
+  // the contentStream is destroyed here
+}
+
+ZipFile::SaveAndClose(archive, "archive.zip");
 ```
 
 ### Compress and encrypt the memory stream ###
-```
-#!c++
-  char buffer[] = "A content to encrypt";
-  imemstream contentStream(buffer); // imemstream is located in Source/ZipLib/streams
+```C++
+char buffer[] = "A content to encrypt";
+imemstream contentStream(buffer); // imemstream is located in Source/ZipLib/streams
 
-  auto archive = ZipFile::Open("archive.zip");
-  auto entry = archive->CreateEntry("file.dat");
-  
-  entry->SetPassword("pass");
-  entry->UseDataDescriptor(); // read stream only once
-  entry->SetCompressionStream(contentStream);
+auto archive = ZipFile::Open("archive.zip");
+auto entry = archive->CreateEntry("file.dat");
 
-  ZipFile::SaveAndClose(archive, "archive.zip");
+entry->SetPassword("pass");
+entry->UseDataDescriptor(); // read stream only once
+entry->SetCompressionStream(contentStream);
+
+ZipFile::SaveAndClose(archive, "archive.zip");
 ```
 
 *You may find more samples in the **Source/Sample/Main.cpp** file.*
