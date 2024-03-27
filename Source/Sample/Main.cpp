@@ -60,7 +60,7 @@ TEST_METHOD(Sample_ZipFile)
   try
   {
     printf("[+] Compressing '%s'\n", fileIn1);
-    ZipFile::AddFile(zipFilename, fileIn1, LzmaMethod::Create());
+    ZipFile::AddFile(zipFilename, fileIn1, DeflateMethod::Create());
 
     ListZipArchive();
 

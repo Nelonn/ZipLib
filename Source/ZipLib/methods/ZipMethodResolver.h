@@ -6,13 +6,11 @@
 #include "StoreMethod.h"
 #include "DeflateMethod.h"
 #include "Bzip2Method.h"
-#include "LzmaMethod.h"
 
 #define ZIP_METHOD_TABLE          \
   ZIP_METHOD_ADD(StoreMethod);    \
   ZIP_METHOD_ADD(DeflateMethod);  \
-  ZIP_METHOD_ADD(Bzip2Method);    \
-  ZIP_METHOD_ADD(LzmaMethod);
+  ZIP_METHOD_ADD(Bzip2Method);
 
 #define ZIP_METHOD_ADD(method_class)                                                            \
   if (compressionMethod == method_class::GetZipMethodDescriptorStatic().GetCompressionMethod()) \

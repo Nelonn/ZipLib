@@ -10,6 +10,7 @@ option(ZIPLIB_BUILD_THIRD_PARTY "Should build third-party libraries" ON)
 file(GLOB_RECURSE SOURCES Source/ZipLib/**.cpp Source/ZipLib/**.h)
 
 add_library(ziplib STATIC ${SOURCES})
+#add_executable(ziplib ${SOURCES} Source/Sample/Main.cpp)
 
 target_include_directories(ziplib INTERFACE Source/ZipLib)
 

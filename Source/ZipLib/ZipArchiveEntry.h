@@ -5,7 +5,6 @@
 #include "methods/ICompressionMethod.h"
 #include "methods/StoreMethod.h"
 #include "methods/DeflateMethod.h"
-#include "methods/LzmaMethod.h"
 
 #include "streams/substream.h"
 #include "utils/enum_utils.h"
