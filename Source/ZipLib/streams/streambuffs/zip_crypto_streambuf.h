@@ -6,7 +6,7 @@
 #include <random>
 #include <cassert>
 
-#include "../../extlibs/zlib/zlib.h"
+#include "zlib/zlib.h"
 
 template <typename ELEM_TYPE, typename TRAITS_TYPE>
 class zip_crypto_streambuf

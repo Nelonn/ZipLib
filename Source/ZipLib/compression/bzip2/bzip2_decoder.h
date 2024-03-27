@@ -3,7 +3,7 @@
 
 #include "bzip2_decoder_properties.h"
 
-#include "../../extlibs/bzip2/bzlib.h"
+#include "bzip2/bzlib.h"
 
 #include <cstdint>
 

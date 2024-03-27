@@ -2,8 +2,8 @@
 #include "lzma_handle.h"
 #include "lzma_out_stream.h"
 
-#include "../../../extlibs/lzma/7zVersion.h"
-#include "../../../extlibs/lzma/LzmaEnc.h"
+#include "lzma/7zVersion.h"
+#include "lzma/LzmaEnc.h"
 
 namespace detail
 {

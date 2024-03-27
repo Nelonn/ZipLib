@@ -5,7 +5,16 @@ project(ziplib LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+option(ZIPLIB_BUILD_THIRD_PARTY "Should build third-party libraries" ON)
+
 file(GLOB_RECURSE SOURCES Source/ZipLib/**.cpp Source/ZipLib/**.h)
 
 add_library(ziplib STATIC ${SOURCES})
+
 target_include_directories(ziplib INTERFACE Source/ZipLib)
+
+if (ZIPLIB_BUILD_THIRD_PARTY)
+    file(GLOB_RECURSE THIRD_PARTY_SOURCES Source/ThirdParty/**.cpp Source/ThirdParty/**.h)
+    target_sources(ziplib PRIVATE ${THIRD_PARTY_SOURCES})
+    target_include_directories(ziplib PRIVATE Source/ThirdParty INTERFACE Source/ThirdParty)
+endif ()
