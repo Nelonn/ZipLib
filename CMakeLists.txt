@@ -1,21 +1,22 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.5)
 
 project(ziplib LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-option(ZIPLIB_BUILD_THIRD_PARTY "Should build third-party libraries" ON)
+add_subdirectory(ThirdParty/bzip2)
+add_subdirectory(ThirdParty/zlib)
 
-file(GLOB_RECURSE SOURCES Source/ZipLib/**.cpp Source/ZipLib/**.h)
+file(GLOB_RECURSE SOURCES Source/**.cpp Source/**.h)
 
 add_library(ziplib STATIC ${SOURCES})
-#add_executable(ziplib ${SOURCES} Source/Sample/Main.cpp)
 
-target_include_directories(ziplib INTERFACE Source/ZipLib)
+target_include_directories(ziplib PUBLIC Source)
 
-if (ZIPLIB_BUILD_THIRD_PARTY)
-    file(GLOB_RECURSE THIRD_PARTY_SOURCES Source/ThirdParty/**.c Source/ThirdParty/**.h)
-    target_sources(ziplib PRIVATE ${THIRD_PARTY_SOURCES})
-    target_include_directories(ziplib PRIVATE Source/ThirdParty INTERFACE Source/ThirdParty)
+target_link_libraries(ziplib PUBLIC ziplib::external_bzip2 ziplib::external_zlib)
+
+if (PROJECT_IS_TOP_LEVEL)
+    add_executable(ziplib_sample Sample/Main.cpp)
+    target_link_libraries(ziplib_sample PRIVATE ziplib)
 endif ()

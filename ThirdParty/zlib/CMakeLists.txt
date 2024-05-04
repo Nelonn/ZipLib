@@ -1,0 +1,13 @@
+if (TARGET zlibstatic)
+    add_library(ziplib::external_zlib ALIAS zlibstatic)
+elseif (TARGET zlib)
+    add_library(ziplib::external_zlib ALIAS zlib)
+else ()
+    message(STATUS "ZipLib: Using bundled zlib")
+    cmake_policy(PUSH)
+    cmake_policy(SET CMP0077 NEW) # option() honors normal variables.
+    set(ZLIB_BUILD_EXAMPLES OFF)
+    add_subdirectory(zlib-1.3.1)
+    cmake_policy(POP)
+    add_library(ziplib::external_zlib ALIAS zlibstatic)
+endif ()

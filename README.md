@@ -1,5 +1,5 @@
 # ZipLib #
-ZipLib is a lightweight C++11 library for working with ZIP archives with ease. The very useful feature of ZipLib is that **it is built around STL streams, no additional dependencies (boost) are required**.
+ZipLib is a lightweight C++11 library for working with ZIP archives with ease. The very useful feature of ZipLib is that **it is built around STL streams, no additional dependencies (like boost) are required**.
 
 ## Features ##
 * Compression/decompresion using the DEFLATE algorithm

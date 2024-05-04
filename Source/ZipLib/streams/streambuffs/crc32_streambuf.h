@@ -3,7 +3,7 @@
 #include <cstdint>
 
 #include "../substream.h"
-#include "zlib/zlib.h"
+#include <zlib.h>
 
 template <typename ELEM_TYPE, typename TRAITS_TYPE>
 class crc32_streambuf
