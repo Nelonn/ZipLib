@@ -1,0 +1,4 @@
+
+option(ZIPLIB_BUNDLED_BZIP2 "Use bundled bzip2" ON)
+
+option(ZIPLIB_BUNDLED_ZLIB "Use bundled zlib" ON)
