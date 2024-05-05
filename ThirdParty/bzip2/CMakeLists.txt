@@ -3,7 +3,7 @@ option(ZIPLIB_BUNDLED_BZIP2 "Use bundled bzip2" ON)
 if (ZIPLIB_BUNDLED_BZIP2)
     message(STATUS "ZipLib: Using bundled bzip2, use option ZIPLIB_BUNDLED_BZIP2")
     cmake_policy(PUSH)
-    cmake_policy(SET CMP0077 NEW) # option() honors normal variables.
+    set(CMAKE_POLICY_DEFAULT_CMP0077 NEW) # cmake_policy(SET CMP0077 NEW) - not working
     set(ENABLE_LIB_ONLY ON)
     set(ENABLE_STATIC_LIB ON)
     add_subdirectory(bzip2-master)
