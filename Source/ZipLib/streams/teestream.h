@@ -50,6 +50,5 @@ class basic_teestream
 
 //////////////////////////////////////////////////////////////////////////
 
-typedef basic_teestream<uint8_t, std::char_traits<uint8_t>>  byte_teestream;
 typedef basic_teestream<char, std::char_traits<char>>        teestream;
 typedef basic_teestream<wchar_t, std::char_traits<wchar_t>>  wteestream;

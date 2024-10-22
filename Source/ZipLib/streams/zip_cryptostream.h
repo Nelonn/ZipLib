@@ -63,5 +63,4 @@ class basic_zip_cryptostream
 
 //////////////////////////////////////////////////////////////////////////
 
-typedef basic_zip_cryptostream<uint8_t, std::char_traits<uint8_t>>  byte_zip_cryptostream;
 typedef basic_zip_cryptostream<char, std::char_traits<char>>        zip_cryptostream;

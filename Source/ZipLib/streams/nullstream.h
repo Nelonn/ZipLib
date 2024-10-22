@@ -23,6 +23,5 @@ class basic_nullstream
 
 //////////////////////////////////////////////////////////////////////////
 
-typedef basic_nullstream<uint8_t, std::char_traits<uint8_t>> byte_nullstream;
 typedef basic_nullstream<char, std::char_traits<char>>       nullstream;
 typedef basic_nullstream<wchar_t, std::char_traits<wchar_t>> wnullstream;

@@ -96,14 +96,11 @@ class basic_iomemstream
 
 //////////////////////////////////////////////////////////////////////////
 
-typedef basic_imemstream<uint8_t, std::char_traits<uint8_t>>  byte_imemstream;
 typedef basic_imemstream<char, std::char_traits<char>>        imemstream;
 typedef basic_imemstream<wchar_t, std::char_traits<wchar_t>>  wimemstream;
 
-typedef basic_omemstream<uint8_t, std::char_traits<uint8_t>>  byte_omemstream;
 typedef basic_omemstream<char, std::char_traits<char>>        omemstream;
 typedef basic_omemstream<wchar_t, std::char_traits<wchar_t>>  womemstream;
 
-typedef basic_iomemstream<uint8_t, std::char_traits<uint8_t>> byte_iomemstream;
 typedef basic_iomemstream<char, std::char_traits<char>>       iomemstream;
 typedef basic_iomemstream<wchar_t, std::char_traits<wchar_t>> wiomemstream;
